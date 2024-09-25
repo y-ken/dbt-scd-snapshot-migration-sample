@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: salesforce
+    description: copy of latest salesforce objects
+    schema: salesforce
+    tables:
+      - name: Account
+        columns: []
