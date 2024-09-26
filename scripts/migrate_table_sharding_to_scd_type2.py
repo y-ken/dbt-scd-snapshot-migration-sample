@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(description="Generate and execute DBT commands"
 parser.add_argument("--dry-run", action="store_true", help="Print commands without executing them")
 parser.add_argument("--input-file", type=str, required=True, help="Path to the input file containing table names")
 args = parser.parse_args()
-source_dataset = "dl_salesforce_snapshots"
+source_dataset = "日付シャーディングテーブルが納められているdataset名を指定する"
 
 # 入力ファイルから表名リストを読み込む関数
 def load_input_list(file_path):
@@ -43,7 +43,7 @@ def format_date(table_name):
 # コマンドを生成する関数
 def generate_command(table_name):
     underscore_index = table_name.rfind('_')
-    prefix = camel_to_snake(table_name[:underscore_index].replace('_AE_491',''))
+    prefix = camel_to_snake(table_name[:underscore_index])
     session_date = format_date(table_name)
     return f'dbt snapshot --select sf_{prefix}_snapshots --vars \'{{"session_date": "{session_date}", "source_dataset": "{source_dataset}", "source_table": "{table_name}"}}\''
 

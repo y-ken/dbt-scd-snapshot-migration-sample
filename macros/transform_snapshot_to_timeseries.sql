@@ -1,4 +1,4 @@
-{% macro transform_snapshot_to_timeseries(table_ref, start_date, primary_key='Id') -%}
+{% macro transform_snapshot_to_timeseries(table_ref, start_date=none, primary_key='Id') -%}
 with source as (
     select * from {{ table_ref }}
 ), date_spine as (
@@ -29,8 +29,10 @@ from
         on date_spine.date >= date(hist.dbt_valid_from, 'Asia/Tokyo')
         and (date_spine.date < date(hist.dbt_valid_to, 'Asia/Tokyo') or hist.dbt_valid_to is null)
 where
-    date_spine.date > '{{ start_date }}'
-    and date_spine.date < current_date('Asia/Tokyo')
+    date_spine.date < current_date('Asia/Tokyo')
+    {% if start_date is not none %}
+    and date_spine.date > '{{ start_date }}'
+    {% endif %}
 {%- if is_incremental() %}
     and date_spine.date >= date_sub(current_date('Asia/Tokyo'), interval 7 day)
 {% endif %}

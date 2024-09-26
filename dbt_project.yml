@@ -38,7 +38,7 @@ data_tests:
 # ==================
 models:
   dbt_sample:
-    +materialized: view
+    +materialized: table
 
     salesforce_history:
       +target_database: my_project
